@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Better Ventures Engineering - System Map</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+
+  .header { text-align: center; padding: 32px 20px 16px; }
+  .header h1 { font-size: 28px; font-weight: 700; color: #f8fafc; }
+  .header p { color: #94a3b8; margin-top: 8px; font-size: 15px; }
+
+  .legend { display: flex; gap: 24px; justify-content: center; margin: 16px 0 24px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #94a3b8; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 3px; }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 40px; }
+
+  /* Section rows */
+  .section { margin-bottom: 32px; }
+  .section-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b; margin-bottom: 12px; padding-left: 4px; }
+  .section-grid { display: flex; gap: 16px; flex-wrap: wrap; }
+
+  /* Tool cards */
+  .card {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 20px;
+    flex: 1;
+    min-width: 220px;
+    max-width: 340px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .card:hover { border-color: #475569; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .card.active { border-color: #60a5fa; box-shadow: 0 0 0 1px #60a5fa; }
+
+  .card-badge {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .badge-live { background: #065f46; color: #6ee7b7; }
+  .badge-auto { background: #1e3a5f; color: #7dd3fc; }
+  .badge-wip { background: #713f12; color: #fde68a; }
+  .badge-config { background: #3b0764; color: #d8b4fe; }
+
+  .card-accent { width: 100%; height: 3px; border-radius: 2px; margin-bottom: 14px; }
+  .accent-deal { background: linear-gradient(90deg, #3b82f6, #60a5fa); }
+  .accent-portfolio { background: linear-gradient(90deg, #10b981, #34d399); }
+  .accent-info { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+  .accent-shared { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+
+  .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 6px; color: #f1f5f9; }
+  .card .desc { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+
+  /* Detail panel */
+  .detail-panel {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 12px;
+    padding: 24px;
+    margin-top: 16px;
+    display: none;
+    animation: slideDown 0.2s ease;
+  }
+  .detail-panel.visible { display: block; }
+  @keyframes slideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-panel h2 { font-size: 20px; margin-bottom: 16px; color: #f8fafc; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .detail-item { }
+  .detail-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 4px; }
+  .detail-value { font-size: 14px; color: #e2e8f0; }
+  .detail-value a { color: #60a5fa; text-decoration: none; }
+  .detail-value a:hover { text-decoration: underline; }
+  .detail-section { margin-top: 16px; padding-top: 16px; border-top: 1px solid #334155; }
+  .detail-section p { font-size: 14px; line-height: 1.6; color: #cbd5e1; }
+
+  /* Flow arrows */
+  .flow-section { text-align: center; padding: 12px 0; }
+  .flow-arrow { color: #475569; font-size: 20px; letter-spacing: 8px; }
+  .flow-label { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+  /* Shared infra */
+  .infra-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .infra-item {
+    background: #1e293b;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+  }
+  .infra-item h4 { font-size: 14px; color: #e2e8f0; margin-bottom: 4px; }
+  .infra-item p { font-size: 12px; color: #64748b; }
+
+  @media (max-width: 768px) {
+    .card { min-width: 100%; max-width: 100%; }
+    .detail-grid { grid-template-columns: 1fr; }
+    .infra-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Better Ventures Engineering</h1>
+  <p>System architecture map -- click any tool for details</p>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:#3b82f6"></div> Deal Flow</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#10b981"></div> Portfolio Tools</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#f59e0b"></div> Information</div>
+  <div class="legend-item"><div class="legend-dot" style="background:#8b5cf6"></div> Shared Config</div>
+</div>
+
+<div class="container">
+
+  <!-- DEAL FLOW BOTS -->
+  <div class="section">
+    <div class="section-label">Deal Flow -- Sourcing Bots</div>
+    <div class="section-grid">
+
+      <div class="card" onclick="showDetail('acceleratorbot')">
+        <span class="card-badge badge-auto">Auto</span>
+        <div class="card-accent accent-deal"></div>
+        <h3>AcceleratorBot</h3>
+        <div class="desc">Scrapes 30+ accelerators weekly. Scores companies with Claude Haiku and pushes high-scoring deals to Affinity.</div>
+      </div>
+
+      <div class="card" onclick="showDetail('dealbot')">
+        <span class="card-badge badge-auto">Auto</span>
+        <div class="card-accent accent-deal"></div>
+        <h3>DealBot</h3>
+        <div class="desc">Scores PitchBook exports on Climate, Health, and Workforce themes using GPT-4o-mini. Pushes to Affinity.</div>
+      </div>
+
+      <div class="card" onclick="showDetail('stealthbot')">
+        <span class="card-badge badge-auto">Auto</span>
+        <div class="card-accent accent-deal"></div>
+        <h3>StealthBot</h3>
+        <div class="desc">Scores LinkedIn outreach founders 4x/week with Claude Sonnet. Auto-assigns thesis fit and deal owner.</div>
+      </div>
+
+      <div class="card" onclick="showDetail('rubrics')">
+        <span class="card-badge badge-config">Config</span>
+        <div class="card-accent accent-shared"></div>
+        <h3>Scoring Rubrics</h3>
+        <div class="desc">Shared YAML criteria for all bots. Edit on GitHub, changes propagate automatically.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="flow-section">
+    <div class="flow-arrow">&darr; &darr; &darr;</div>
+    <div class="flow-label">Scored deals pushed to Affinity CRM</div>
+  </div>
+
+  <!-- DEAL EVALUATION -->
+  <div class="section">
+    <div class="section-label">Deal Flow -- Evaluation Dashboard</div>
+    <div class="section-grid">
+
+      <div class="card" onclick="showDetail('pipeline')" style="max-width:700px">
+        <span class="card-badge badge-live">Live</span>
+        <div class="card-accent accent-deal"></div>
+        <h3>BV Pipeline</h3>
+        <div class="desc">4-stage AI deal evaluation: Quick Screen &rarr; Deck Eval &rarr; Post-Call &rarr; Deep Diligence. Syncs with all three Affinity lists. Uses Claude Sonnet with web search.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="flow-section">
+    <div class="flow-arrow">&bull; &bull; &bull;</div>
+    <div class="flow-label">Separate systems below</div>
+  </div>
+
+  <!-- PORTFOLIO TOOLS -->
+  <div class="section">
+    <div class="section-label">Portfolio Tools</div>
+    <div class="section-grid">
+
+      <div class="card" onclick="showDetail('raisebot')">
+        <span class="card-badge badge-live">Live</span>
+        <div class="card-accent accent-portfolio"></div>
+        <h3>Raisebot</h3>
+        <div class="desc">Investor database with AI matching. Portfolio companies find investors with BV connection data.</div>
+      </div>
+
+      <div class="card" onclick="showDetail('peoplebot')">
+        <span class="card-badge badge-wip">WIP</span>
+        <div class="card-accent accent-portfolio"></div>
+        <h3>PeopleBot</h3>
+        <div class="desc">Executive recruiting via LinkedIn. Warmth scoring from Affinity email history. Not yet deployed.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- INFORMATION -->
+  <div class="section">
+    <div class="section-label">Information</div>
+    <div class="section-grid">
+
+      <div class="card" onclick="showDetail('newsbot')">
+        <span class="card-badge badge-live">Live</span>
+        <div class="card-accent accent-info"></div>
+        <h3>NewsBot</h3>
+        <div class="desc">Personalized news dashboard. RSS feeds, Google News, newsletters via Zapier. Per-member views + portfolio tracking.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div id="detail-panel" class="detail-panel"></div>
+
+  <!-- SHARED INFRASTRUCTURE -->
+  <div class="section" style="margin-top:40px">
+    <div class="section-label">Shared Infrastructure</div>
+    <div class="infra-grid">
+      <div class="infra-item"><h4>Affinity CRM</h4><p>Central deal database<br/>3 lists, API v1 + v2</p></div>
+      <div class="infra-item"><h4>GitHub Actions</h4><p>Bot automation<br/>Scheduled + triggered</p></div>
+      <div class="infra-item"><h4>Vercel</h4><p>Web app hosting<br/>Auto-deploy from main</p></div>
+      <div class="infra-item"><h4>Supabase</h4><p>PostgreSQL<br/>Pipeline + Raisebot</p></div>
+      <div class="infra-item"><h4>Upstash Redis</h4><p>NewsBot storage<br/>Feed configs + articles</p></div>
+      <div class="infra-item"><h4>PhantomBuster</h4><p>LinkedIn scraping<br/>3 bots use it</p></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const tools = {
+  acceleratorbot: {
+    name: 'AcceleratorBot',
+    purpose: 'Automated accelerator deal sourcing. Scrapes batch/portfolio pages from 30+ accelerators and venture programs, extracts company data using AI, scores against BV thesis, and pushes qualifying deals to Affinity.',
+    url: null,
+    repo: 'https://github.com/BV-Eng/acceleratorbot',
+    stack: 'Python 3.13, crawl4ai, Playwright',
+    llm: 'Claude Haiku 4.5 (Anthropic)',
+    database: 'None (JSON state files)',
+    deployment: 'GitHub Actions - every Wednesday at 10am CST',
+    affinity: 'List 324289 (Organizations). Pushes companies scoring 6+. Post-push cleanup removes companies with >$10M funding.',
+    schedule: 'Weekly on Wednesdays',
+    notes: '$40/month Anthropic budget cap. Hunter.io for contact enrichment. Tracks ~30 accelerators including YC, IndieBio, MIT Delta V, Plug and Play.'
+  },
+  dealbot: {
+    name: 'DealBot',
+    purpose: 'PitchBook deal scoring pipeline. Takes PitchBook CSV/XLSX exports, scores companies on three investment themes, and uploads qualifying companies to Affinity with auto-assigned owners.',
+    url: null,
+    repo: 'https://github.com/BV-Eng/dealbot',
+    stack: 'Python 3.11, pandas, openpyxl',
+    llm: 'GPT-4o-mini (OpenAI)',
+    database: 'None (file-based)',
+    deployment: 'GitHub Actions - triggered by CSV push to input/',
+    affinity: 'List 169980 (Organizations). Scores 3 themes (Climate, Health, Workforce) 1-10. Filter: any theme >= 5.',
+    schedule: 'On CSV upload to input/ folder',
+    notes: 'Also scores founders via PhantomBuster LinkedIn scrapes. Uses GitHub Gist as intermediary for PhantomBuster. Auto-assigns owners based on theme scores.'
+  },
+  stealthbot: {
+    name: 'StealthBot',
+    purpose: 'Stealth/early-stage founder pipeline. Syncs LinkedIn outreach contacts from Google Sheets to Affinity, then scores founders using AI and determines thesis fit.',
+    url: null,
+    repo: 'https://github.com/BV-Eng/stealthbot',
+    stack: 'Node.js 20, vanilla (no frameworks)',
+    llm: 'Claude Sonnet 4.6 (Anthropic)',
+    database: 'None (Affinity is the database)',
+    deployment: 'GitHub Actions - sync on Sheet update, enrich Mon/Wed/Thu/Fri',
+    affinity: 'List 335121 (Persons). Writes score, reasoning, thesis fit dropdown, and auto-assigns owner.',
+    schedule: 'Sync: on Google Sheet update. Enrich: 4x/week at 10am PST.',
+    notes: 'Google Apps Script in Sheet fires repository_dispatch to trigger sync. PhantomBuster S3 CSV is the data source for enrichment.'
+  },
+  rubrics: {
+    name: 'Scoring Rubrics',
+    purpose: 'Single source of truth for all scoring criteria. Four YAML files define company scoring themes, founder evaluation, investor routing, and prestigious investor lists.',
+    url: null,
+    repo: 'https://github.com/BV-Eng/bv-rubrics',
+    stack: 'YAML files (no code)',
+    llm: 'N/A (consumed by bots)',
+    database: 'N/A',
+    deployment: 'None needed - bots fetch via GitHub raw URL at runtime',
+    affinity: 'N/A (defines scoring criteria used by bots that write to Affinity)',
+    schedule: 'N/A - edit and commit, bots pick up changes on next run',
+    notes: 'Company scoring: 3 themes (Climate, Health, Workforce) 1-10. Founder scoring: holistic 1-10. Investor routing: Rick (Climate), Wes (Health), Lyndsey (Workforce). Current version: v2.'
+  },
+  pipeline: {
+    name: 'BV Pipeline',
+    purpose: 'AI-powered deal evaluation dashboard. Syncs all three Affinity lists, provides 4-stage evaluation (Quick Screen, Deck Eval, Post-Call, Deep Diligence), and writes results back to Affinity.',
+    url: 'https://bv-pipeline.vercel.app/pipeline',
+    repo: 'https://github.com/BV-Eng/bv-pipeline',
+    stack: 'Next.js 14, TypeScript, Tailwind CSS, React 18',
+    llm: 'Claude Sonnet 4 with web_search tool (Anthropic)',
+    database: 'Supabase PostgreSQL (companies + evals tables)',
+    deployment: 'Vercel - auto-deploys from main branch',
+    affinity: 'Reads all 3 lists (169980, 324289, 335121). Writes back pipeline status, owner changes, and evaluation report links.',
+    schedule: 'Always live. Sync manually via "Sync from Affinity" button.',
+    notes: 'Stage 1: 9 criteria. Stage 2: 22+ criteria from pitch deck PDF. Stage 3: post-call scores + FOALED personality typing. Stage 4: 5-step deep diligence memo. SSE streaming for real-time progress.'
+  },
+  raisebot: {
+    name: 'Raisebot',
+    purpose: 'Investor database and AI matching tool for BV portfolio companies. Helps founders find the best investors by matching company profiles against 2000+ investors with BV relationship data.',
+    url: 'https://raisebot-fawn.vercel.app',
+    repo: 'https://github.com/BV-Eng/raisebot',
+    stack: 'Next.js 14, TypeScript, Tailwind CSS',
+    llm: 'Claude 3 Haiku (Anthropic) - profile extraction',
+    database: 'Supabase PostgreSQL (investors + people tables)',
+    deployment: 'Vercel - auto-deploys from main branch',
+    affinity: 'Read-only. Enrichment scripts pull relationship strength scores for BV team members.',
+    schedule: 'Always live. Data imported offline via CSV/Excel.',
+    notes: '7-layer hybrid matching algorithm. Connection strength multipliers boost investors with BV relationships. Shortlists + CSV export. No authentication currently.'
+  },
+  peoplebot: {
+    name: 'PeopleBot',
+    purpose: 'Executive recruiting pipeline. Generates LinkedIn Sales Navigator searches, scrapes profiles via PhantomBuster, and enriches with Affinity warmth data (email recency).',
+    url: null,
+    repo: 'https://github.com/BV-Eng/peoplebot',
+    stack: 'FastAPI (Python 3.11) + Next.js 14 (TypeScript)',
+    llm: 'None (rule-based warmth scoring)',
+    database: 'PostgreSQL (designed for Vercel Postgres)',
+    deployment: 'Not deployed - needs Vercel setup',
+    affinity: 'Read-only. Pulls relationship/email recency data for warmth scoring.',
+    schedule: 'N/A - not deployed',
+    notes: 'Warmth tiers: hot (<180 days), warm (<365), lukewarm (<540), cold. ~70 location ID mappings, ~50 company ID mappings for Sales Nav. Built but needs deployment and testing.'
+  },
+  newsbot: {
+    name: 'NewsBot',
+    purpose: 'Personalized news aggregation dashboard. Each BV team member has curated RSS feeds organized by investment theme. Tracks 71 portfolio companies via Google News. Newsletter ingestion via Zapier.',
+    url: 'https://news-bot-4nee.vercel.app',
+    repo: 'https://github.com/BV-Eng/newsbot',
+    stack: 'Next.js (latest), TypeScript, Tailwind CSS',
+    llm: 'None (pure RSS aggregation)',
+    database: 'Upstash Redis (feed configs, newsletters, saved articles)',
+    deployment: 'Vercel - auto-deploys from main branch',
+    affinity: 'N/A',
+    schedule: 'Always live. RSS feeds fetched on each page load.',
+    notes: 'Per-member feed folders (Rick, Wes, Lyndsey). PortCos tab tracks 71 portfolio companies. Slack sharing to 5 themed channels. Zapier posts newsletters to /api/newsletters endpoint.'
+  }
+};
+
+let activeCard = null;
+
+function showDetail(toolId) {
+  const tool = tools[toolId];
+  const panel = document.getElementById('detail-panel');
+
+  // Toggle off if clicking same card
+  if (activeCard === toolId) {
+    panel.classList.remove('visible');
+    document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+    activeCard = null;
+    return;
+  }
+
+  activeCard = toolId;
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+
+  let html = `<h2>${tool.name}</h2>`;
+  html += `<div class="detail-section"><p>${tool.purpose}</p></div>`;
+  html += `<div class="detail-grid">`;
+
+  if (tool.url) {
+    html += `<div class="detail-item"><div class="detail-label">Live URL</div><div class="detail-value"><a href="${tool.url}" target="_blank">${tool.url.replace('https://', '')}</a></div></div>`;
+  }
+  html += `<div class="detail-item"><div class="detail-label">GitHub Repo</div><div class="detail-value"><a href="${tool.repo}" target="_blank">${tool.repo.replace('https://github.com/', '')}</a></div></div>`;
+  html += `<div class="detail-item"><div class="detail-label">Tech Stack</div><div class="detail-value">${tool.stack}</div></div>`;
+  html += `<div class="detail-item"><div class="detail-label">LLM</div><div class="detail-value">${tool.llm}</div></div>`;
+  html += `<div class="detail-item"><div class="detail-label">Database</div><div class="detail-value">${tool.database}</div></div>`;
+  html += `<div class="detail-item"><div class="detail-label">Deployment</div><div class="detail-value">${tool.deployment}</div></div>`;
+  html += `<div class="detail-item"><div class="detail-label">Affinity</div><div class="detail-value">${tool.affinity}</div></div>`;
+  html += `<div class="detail-item"><div class="detail-label">Schedule</div><div class="detail-value">${tool.schedule}</div></div>`;
+  html += `</div>`;
+
+  if (tool.notes) {
+    html += `<div class="detail-section"><div class="detail-label">Notes</div><p>${tool.notes}</p></div>`;
+  }
+
+  panel.innerHTML = html;
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+
+</body>
+</html>
