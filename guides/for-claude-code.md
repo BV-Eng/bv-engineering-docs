@@ -67,6 +67,20 @@ You are maintaining a suite of tools for Better Ventures (BV), a venture capital
 2. Go to raisebot-fawn.vercel.app/admin/import and upload.
 3. Run enrichment scripts in `backend/enrichment/` for Affinity connection data.
 
+### Upgrade the LLM model across all tools
+
+All repos support a `CLAUDE_MODEL` environment variable. To upgrade:
+- **Bots (AcceleratorBot, DealBot, StealthBot):** Add `CLAUDE_MODEL` to the repo's GitHub Secrets with the new model ID. If not set, the current default is used.
+- **Web apps (BV Pipeline, Raisebot):** Add `CLAUDE_MODEL` to Vercel Environment Variables.
+- Defaults: AcceleratorBot/DealBot/Raisebot use `claude-haiku-4-5-20251001`, StealthBot/BV Pipeline use `claude-sonnet-4-6`.
+
+### Enable Slack failure alerts
+
+Bot workflows (AcceleratorBot, DealBot, StealthBot) have Slack notification steps built in. To activate:
+1. Set up a Slack incoming webhook for your desired channel.
+2. Add the webhook URL as `SLACK_WEBHOOK_URL` in each repo's GitHub Secrets.
+3. Alerts will fire automatically when any workflow fails.
+
 ---
 
 ## Common Failure Modes
