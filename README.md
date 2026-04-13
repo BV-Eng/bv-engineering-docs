@@ -43,3 +43,4 @@ Technical onboarding, configuration references, and operational runbooks:
 
 - [Working with Claude Code](guides/for-claude-code.md)
 - [Critical Configuration Reference](guides/critical-config.md)
+- [Subscriptions & Billing](guides/subscriptions.md)
