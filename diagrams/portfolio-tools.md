@@ -5,7 +5,7 @@
 ```mermaid
 graph TB
     subgraph "Raisebot — Investor Matching"
-        R1[Portfolio Company<br/>describes their startup] --> R2[Claude 3 Haiku<br/>extracts profile]
+        R1[Portfolio Company<br/>describes their startup] --> R2[Claude Haiku 4.5<br/>extracts profile]
         R2 --> R3[7-layer hybrid scoring<br/>against investor DB]
         R3 --> R4[Ranked results with<br/>BV connection strength]
         R4 --> R5[Save to shortlist<br/>Export CSV]
@@ -36,7 +36,7 @@ graph TB
 Raisebot helps BV portfolio companies find the right investors for their next fundraise. The workflow:
 
 1. A portfolio company (or a BV team member on their behalf) types a description of the startup into the AI Matching box.
-2. Claude 3 Haiku extracts a structured profile from the description — stage, sector, geography, business model, and other attributes.
+2. Claude Haiku 4.5 extracts a structured profile from the description — stage, sector, geography, business model, and other attributes.
 3. The profile is scored against the investor database using a 7-layer hybrid scoring system that evaluates fit across multiple dimensions (sector focus, stage preference, check size range, geographic overlap, and more).
 4. Results are ranked and enriched with BV connection strength data from Affinity. This shows which BV team member has a relationship with each investor and how strong it is — making warm introductions possible.
 5. The team can save investors to shortlists and export to CSV for sharing with the portfolio company.

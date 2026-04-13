@@ -194,7 +194,7 @@ API keys are stored in two places:
 - **GitHub Secrets** (per repository) -- for bots that run via GitHub Actions
 - **Vercel Environment Variables** -- for web apps
 
-Services with API keys: Anthropic (Claude AI), OpenAI, Affinity CRM, Hunter.io, PhantomBuster, Supabase, Upstash Redis
+Services with API keys: Anthropic (Claude AI), Affinity CRM, Hunter.io, PhantomBuster, Supabase, Upstash Redis
 
 ### If Something Breaks
 For any of these tools, you can open Claude Code in the relevant repository directory and describe the issue. The CLAUDE.md files in each repo contain context about the codebase. Remember to use eng@better.vc for any commits.
@@ -224,13 +224,12 @@ For any of these tools, you can open Claude Code in the relevant repository dire
 
 ## SUBSCRIPTIONS & BILLING
 
-### Monthly Costs (~$348/month total)
+### Monthly Costs (~$328/month total)
 
 | Service | Cost/Month | What It Powers | Account |
 |---------|-----------|----------------|---------|
 | Anthropic (Claude Code CLI) | $100 | Development and maintenance tool | eng@better.vc |
-| Anthropic (API credits) | Variable (~$15-40) | AcceleratorBot, StealthBot, BV Pipeline, Raisebot | eng@better.vc |
-| OpenAI | $20 | DealBot scoring (planned: migrate to Anthropic) | eng@better.vc |
+| Anthropic (API credits) | Variable (~$20-50) | AcceleratorBot, DealBot, StealthBot, BV Pipeline, Raisebot | eng@better.vc |
 | Vercel | $20 | Hosts BV Pipeline, NewsBot, Raisebot | eng@better.vc |
 | PhantomBuster | $159 | LinkedIn scraping for DealBot, StealthBot, PeopleBot | eng@better.vc |
 | Hunter.io | $49 | AcceleratorBot email enrichment | Rick's account |
@@ -240,8 +239,7 @@ For any of these tools, you can open Claude Code in the relevant repository dire
 
 ### What Each Service Does
 
-- **Anthropic** -- The AI behind most of our tools. Claude scores companies, evaluates founders, researches deals, and matches investors. The $100/month is for the Claude Code development tool. API usage (for the bots and dashboards) is billed separately from prepaid credits.
-- **OpenAI** -- Currently only used by DealBot for company scoring. Planned to be migrated to Anthropic so we can consolidate to one AI provider.
+- **Anthropic** -- The AI behind all of our tools. Claude scores companies, evaluates founders, researches deals, and matches investors. The $100/month is for the Claude Code development tool. API usage (for the bots and dashboards) is billed separately from prepaid credits. All tools now use Anthropic -- no other AI providers.
 - **Vercel** -- Web hosting platform. All three web apps auto-deploy when code is pushed to GitHub. No manual deployment needed.
 - **PhantomBuster** -- LinkedIn automation. Scrapes founder/candidate profiles that our bots then score and enrich. This is the second-largest expense.
 - **Hunter.io** -- Finds email addresses for founders discovered by AcceleratorBot. Billed under Rick's account. May switch to RocketReach.
@@ -253,7 +251,7 @@ For any of these tools, you can open Claude Code in the relevant repository dire
 
 | Service | Impact if cancelled |
 |---------|-------------------|
-| Anthropic API | All AI scoring and evaluation stops across AcceleratorBot, StealthBot, BV Pipeline, and Raisebot |
+| Anthropic API | ALL AI-powered tools stop: AcceleratorBot, DealBot, StealthBot, BV Pipeline evals, Raisebot matching |
 | Vercel | BV Pipeline, NewsBot, and Raisebot websites go offline |
 | PhantomBuster | LinkedIn scraping stops -- DealBot founder scoring, StealthBot enrichment, and PeopleBot all affected |
 | Hunter.io | AcceleratorBot still runs but won't find founder email addresses |
@@ -262,5 +260,5 @@ For any of these tools, you can open Claude Code in the relevant repository dire
 ### Action Items
 
 1. **Set up Anthropic auto-billing with spend limits** -- Currently running on prepaid credits. Set a $200/month limit at console.anthropic.com to prevent unexpected charges while ensuring tools don't stop working.
-2. **Migrate DealBot from OpenAI to Anthropic** -- Swap GPT-4o-mini for Claude Haiku 4.5 to consolidate to one AI provider. Saves $20/month and simplifies billing.
+2. ~~**Migrate DealBot from OpenAI to Anthropic**~~ -- DONE. DealBot now uses Claude Haiku 4.5. OpenAI subscription can be cancelled. **Important:** Set the `ANTHROPIC_API_KEY` GitHub secret on the dealbot repo with the real key value.
 3. **Evaluate Hunter.io vs RocketReach** -- Consider switching email enrichment provider for better coverage or pricing.

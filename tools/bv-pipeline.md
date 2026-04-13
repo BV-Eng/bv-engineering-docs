@@ -16,7 +16,7 @@
 | Component  | Detail                                    |
 |------------|-------------------------------------------|
 | Language   | TypeScript (Next.js 14)                   |
-| LLM        | Claude Sonnet 4 with web search           |
+| LLM        | Claude Sonnet 4.6 with web search         |
 | Database   | Supabase PostgreSQL (companies + evals)   |
 | Deployment | Vercel at bv-pipeline.vercel.app          |
 
@@ -50,7 +50,7 @@ Web application at [https://bv-pipeline.vercel.app](https://bv-pipeline.vercel.a
 
 | Variable                  | Location     | Purpose                          |
 |---------------------------|--------------|----------------------------------|
-| ANTHROPIC_API_KEY         | Vercel Env   | Claude Sonnet 4 API access       |
+| ANTHROPIC_API_KEY         | Vercel Env   | Claude Sonnet 4.6 API access     |
 | SUPABASE_URL              | Vercel Env   | Supabase project URL             |
 | SUPABASE_SERVICE_ROLE_KEY | Vercel Env   | Supabase admin access            |
 | AFFINITY_API_KEY          | Vercel Env   | Sync and write-back to Affinity  |

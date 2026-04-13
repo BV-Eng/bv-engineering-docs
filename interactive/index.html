@@ -143,7 +143,7 @@
         <span class="card-badge badge-auto">Auto</span>
         <div class="card-accent accent-deal"></div>
         <h3>DealBot</h3>
-        <div class="desc">Scores PitchBook exports on Climate, Health, and Workforce themes using GPT-4o-mini. Pushes to Affinity.</div>
+        <div class="desc">Scores PitchBook exports on Climate, Health, and Workforce themes using Claude Haiku 4.5. Pushes to Affinity.</div>
       </div>
 
       <div class="card" onclick="showDetail('stealthbot')">
@@ -264,7 +264,7 @@ const tools = {
     url: null,
     repo: 'https://github.com/BV-Eng/dealbot',
     stack: 'Python 3.11, pandas, openpyxl',
-    llm: 'GPT-4o-mini (OpenAI)',
+    llm: 'Claude Haiku 4.5 (Anthropic)',
     database: 'None (file-based)',
     deployment: 'GitHub Actions - triggered by CSV push to input/',
     affinity: 'List 169980 (Organizations). Scores 3 themes (Climate, Health, Workforce) 1-10. Filter: any theme >= 5.',
@@ -303,7 +303,7 @@ const tools = {
     url: 'https://bv-pipeline.vercel.app/pipeline',
     repo: 'https://github.com/BV-Eng/bv-pipeline',
     stack: 'Next.js 14, TypeScript, Tailwind CSS, React 18',
-    llm: 'Claude Sonnet 4 with web_search tool (Anthropic)',
+    llm: 'Claude Sonnet 4.6 with web_search tool (Anthropic)',
     database: 'Supabase PostgreSQL (companies + evals tables)',
     deployment: 'Vercel - auto-deploys from main branch',
     affinity: 'Reads all 3 lists (169980, 324289, 335121). Writes back pipeline status, owner changes, and evaluation report links.',
@@ -316,7 +316,7 @@ const tools = {
     url: 'https://raisebot-fawn.vercel.app',
     repo: 'https://github.com/BV-Eng/raisebot',
     stack: 'Next.js 14, TypeScript, Tailwind CSS',
-    llm: 'Claude 3 Haiku (Anthropic) - profile extraction',
+    llm: 'Claude Haiku 4.5 (Anthropic) - profile extraction',
     database: 'Supabase PostgreSQL (investors + people tables)',
     deployment: 'Vercel - auto-deploys from main branch',
     affinity: 'Read-only. Enrichment scripts pull relationship strength scores for BV team members.',

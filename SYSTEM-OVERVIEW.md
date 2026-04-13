@@ -20,10 +20,10 @@ Scrapes 30+ accelerator and incubator batch pages weekly using crawl4ai and Clau
 
 #### DealBot
 
-Processes PitchBook CSV/XLSX exports, scoring companies on 3 themes (Climate, Health, Workforce) using GPT-4o-mini, and filters at a threshold of 5+. Also scores founders from PhantomBuster LinkedIn scrapes to assess team quality. Qualified companies and founders are pushed to Affinity list 169980.
+Processes PitchBook CSV/XLSX exports, scoring companies on 3 themes (Climate, Health, Workforce) using Claude Haiku 4.5, and filters at a threshold of 5+. Also scores founders from PhantomBuster LinkedIn scrapes to assess team quality. Qualified companies and founders are pushed to Affinity list 169980.
 
 - **Schedule**: GitHub Actions, triggered by CSV upload to the repo's `input/` folder
-- **LLM**: GPT-4o-mini
+- **LLM**: Claude Haiku 4.5
 - **Affinity List**: 169980
 
 #### StealthBot
@@ -45,7 +45,7 @@ BV Pipeline sits on top of Affinity as the team's primary deal evaluation interf
 
 - Syncs all 3 Affinity lists into a Supabase PostgreSQL database
 - Provides a 4-stage AI evaluation workflow: **Quick Screen -> Deck Eval -> Post-Call -> Validation (Deep Diligence)**
-- Uses Claude Sonnet 4 with web search for research at each evaluation stage
+- Uses Claude Sonnet 4.6 with web search for research at each evaluation stage
 - Writes evaluation links and pipeline status back to Affinity, keeping CRM and dashboard in sync
 - Live at [bv-pipeline.vercel.app](https://bv-pipeline.vercel.app)
 
@@ -55,10 +55,10 @@ BV Pipeline sits on top of Affinity as the team's primary deal evaluation interf
 
 #### Raisebot
 
-Investor database containing 2000+ investors. Data was imported from Affinity CSV exports and PitchBook. AI matching via Claude 3 Haiku extracts company profiles from portfolio company descriptions and scores investor relevance. Displays BV team connection strength derived from Affinity relationship data, so portfolio founders can leverage warm intros.
+Investor database containing 2000+ investors. Data was imported from Affinity CSV exports and PitchBook. AI matching via Claude Haiku 4.5 extracts company profiles from portfolio company descriptions and scores investor relevance. Displays BV team connection strength derived from Affinity relationship data, so portfolio founders can leverage warm intros.
 
 - **Live**: [raisebot-fawn.vercel.app](https://raisebot-fawn.vercel.app)
-- **LLM**: Claude 3 Haiku
+- **LLM**: Claude Haiku 4.5
 - **Database**: Supabase (investors + people tables)
 
 #### PeopleBot
@@ -99,10 +99,10 @@ Personalized RSS and news aggregation dashboard. Each team member (Rick, Wes, Ly
 | Tool | Model |
 |------|-------|
 | AcceleratorBot | Claude Haiku 4.5 |
+| DealBot | Claude Haiku 4.5 |
 | StealthBot | Claude Sonnet 4.6 |
-| BV Pipeline | Claude Sonnet 4 |
-| Raisebot | Claude 3 Haiku |
-| DealBot | GPT-4o-mini |
+| BV Pipeline | Claude Sonnet 4.6 |
+| Raisebot | Claude Haiku 4.5 |
 
 ---
 

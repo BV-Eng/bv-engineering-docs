@@ -16,7 +16,7 @@ Investor database with AI-powered search and matching to help portfolio companie
 | Component  | Detail                                    |
 |------------|-------------------------------------------|
 | Language   | TypeScript (Next.js 14)                   |
-| LLM        | Claude 3 Haiku (Anthropic)                |
+| LLM        | Claude Haiku 4.5 (Anthropic)              |
 | Database   | Supabase PostgreSQL                       |
 | Deployment | Vercel at raisebot-fawn.vercel.app        |
 

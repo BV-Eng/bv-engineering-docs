@@ -19,7 +19,7 @@ graph TB
 
     subgraph "Deal Flow Bots"
         ABOT[AcceleratorBot<br/>Python + Claude Haiku 4.5<br/>GitHub Actions Weekly]
-        DBOT[DealBot<br/>Python + GPT-4o-mini<br/>GitHub Actions on Upload]
+        DBOT[DealBot<br/>Python + Claude Haiku 4.5<br/>GitHub Actions on Upload]
         SBOT[StealthBot<br/>Node.js + Claude Sonnet 4.6<br/>GitHub Actions 4x/week]
     end
 
@@ -28,11 +28,11 @@ graph TB
     end
 
     subgraph "Deal Evaluation"
-        PIPE[BV Pipeline Dashboard<br/>Next.js + Claude Sonnet 4<br/>Vercel + Supabase]
+        PIPE[BV Pipeline Dashboard<br/>Next.js + Claude Sonnet 4.6<br/>Vercel + Supabase]
     end
 
     subgraph "Portfolio Tools"
-        RAISE[Raisebot<br/>Next.js + Claude 3 Haiku<br/>Vercel + Supabase]
+        RAISE[Raisebot<br/>Next.js + Claude Haiku 4.5<br/>Vercel + Supabase]
         PEOPLE[PeopleBot<br/>FastAPI + Next.js<br/>Not Deployed]
     end
 

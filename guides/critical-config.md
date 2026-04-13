@@ -61,9 +61,9 @@ Required for all repos. Vercel deploys reject other identities.
 | Tool | Model | Provider |
 |------|-------|----------|
 | AcceleratorBot | claude-haiku-4-5-20251001 | Anthropic |
-| DealBot | gpt-4o-mini | OpenAI |
+| DealBot | claude-haiku-4-5-20251001 | Anthropic |
 | StealthBot | claude-sonnet-4-6 | Anthropic |
-| BV Pipeline | claude-sonnet-4-20250514 | Anthropic |
-| Raisebot | claude-3-haiku-20240307 | Anthropic |
+| BV Pipeline | claude-sonnet-4-6 | Anthropic |
+| Raisebot | claude-haiku-4-5-20251001 | Anthropic |
 | NewsBot | None | — |
 | PeopleBot | None | — |

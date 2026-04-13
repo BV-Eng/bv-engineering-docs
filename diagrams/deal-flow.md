@@ -12,7 +12,7 @@ flowchart LR
 
     subgraph "Scoring"
         AB -->|Claude Haiku 4.5<br/>Score 1-10| F1{Score >= 6?}
-        DB -->|GPT-4o-mini<br/>3 themes 1-10| F2{Any theme >= 5?}
+        DB -->|Claude Haiku 4.5<br/>3 themes 1-10| F2{Any theme >= 5?}
         SB -->|Claude Sonnet 4.6<br/>Score 1-10| F3[All scored]
     end
 
@@ -50,7 +50,7 @@ Deals enter the system through three channels, each served by a dedicated bot:
 Each bot uses a different LLM but follows the same rubric structure defined in the bv-rubrics repo:
 
 - **AcceleratorBot** uses Claude Haiku 4.5 to score companies 1-10. Companies scoring 6 or above are pushed to Affinity.
-- **DealBot** uses GPT-4o-mini to score across three investment themes (Sustainable Industry, Human Health, Workforce), each 1-10. Companies with any theme score of 5 or above are pushed to Affinity.
+- **DealBot** uses Claude Haiku 4.5 to score across three investment themes (Sustainable Industry, Human Health, Workforce), each 1-10. Companies with any theme score of 5 or above are pushed to Affinity.
 - **StealthBot** uses Claude Sonnet 4.6 to score founders 1-10. All scored founders are pushed to Affinity regardless of score.
 
 ### Stage 3: CRM Assignment

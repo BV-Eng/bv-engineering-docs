@@ -5,7 +5,7 @@ Scores PitchBook deal exports and LinkedIn-scraped founders, then pushes qualifi
 ## How It Works
 
 1. A PitchBook CSV or XLSX export is placed in the `input/` folder (manually or via push).
-2. GPT-4o-mini scores each company across three themes: Climate (1-10), Health (1-10), and Workforce (1-10).
+2. Claude Haiku 4.5 scores each company across three themes: Climate (1-10), Health (1-10), and Workforce (1-10).
 3. Companies scoring 5 or higher on any theme pass the filter.
 4. PhantomBuster LinkedIn scrapes (via a GitHub Gist intermediary) provide founder profile data.
 5. Founders are scored separately based on their LinkedIn profiles.
@@ -17,7 +17,7 @@ Scores PitchBook deal exports and LinkedIn-scraped founders, then pushes qualifi
 | Component  | Detail                     |
 |------------|----------------------------|
 | Language   | Python 3.11                |
-| LLM        | GPT-4o-mini (OpenAI)       |
+| LLM        | Claude Haiku 4.5 (Anthropic) |
 | Database   | None (file-based)          |
 | Deployment | GitHub Actions             |
 
@@ -50,7 +50,7 @@ Runs automatically via GitHub Actions when a CSV is pushed to the `input/` folde
 
 | Variable              | Location       | Purpose                           |
 |-----------------------|----------------|-----------------------------------|
-| OPENAI_API_KEY        | GitHub Secrets | GPT-4o-mini scoring               |
+| ANTHROPIC_API_KEY     | GitHub Secrets | Claude Haiku 4.5 scoring          |
 | AFFINITY_API_KEY      | GitHub Secrets | Push companies to Affinity        |
 | PHANTOMBUSTER_API_KEY | GitHub Secrets | LinkedIn founder scraping         |
 

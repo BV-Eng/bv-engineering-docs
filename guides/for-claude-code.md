@@ -21,8 +21,7 @@ You are maintaining a suite of tools for Better Ventures (BV), a venture capital
 
 | Service | Where It Lives | Used By |
 |---------|---------------|---------|
-| ANTHROPIC_API_KEY | GitHub Secrets (acceleratorbot, stealthbot), Vercel (bv-pipeline, raisebot) | Claude API calls |
-| OPENAI_API_KEY | GitHub Secrets (dealbot) | GPT-4o-mini scoring |
+| ANTHROPIC_API_KEY | GitHub Secrets (acceleratorbot, dealbot, stealthbot), Vercel (bv-pipeline, raisebot) | Claude API calls (all tools) |
 | AFFINITY_API_KEY | GitHub Secrets (all bots), Vercel (bv-pipeline) | Affinity CRM |
 | HUNTER_API_KEY | GitHub Secrets (acceleratorbot) | Contact enrichment |
 | PHANTOMBUSTER_API_KEY | GitHub Secrets (dealbot, stealthbot, peoplebot) | LinkedIn scraping |
