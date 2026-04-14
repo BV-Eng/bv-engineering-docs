@@ -2,6 +2,8 @@
 
 Complete guide to BV's automated deal flow, portfolio tools, and information systems. Built 2025-2026.
 
+**BV Engineering Hub (start here):** [bv-engineering-hub.vercel.app](https://bv-engineering-hub.vercel.app) — Central dashboard with live status, tool access, config editing, and password vault.
+
 ---
 
 ## Tool Quick Reference
