@@ -17,6 +17,7 @@ Complete guide to BV's automated deal flow, portfolio tools, and information sys
 | Scoring Rubrics | Shared YAML scoring criteria consumed by all bots | N/A | [github.com/BV-Eng/bv-rubrics](https://github.com/BV-Eng/bv-rubrics) | N/A (consumed via GitHub raw URL) |
 | NewsBot | Personalized RSS/news aggregation dashboard per team member | [news-bot-4nee.vercel.app](https://news-bot-4nee.vercel.app) | [github.com/BV-Eng/newsbot](https://github.com/BV-Eng/newsbot) | Vercel |
 | Raisebot | Investor database + AI matching for portfolio companies | [raisebot-fawn.vercel.app](https://raisebot-fawn.vercel.app) | [github.com/BV-Eng/raisebot](https://github.com/BV-Eng/raisebot) | Vercel |
+| ListBot | Upload any company list, get AI-scored results with founder scoring + Affinity push | [listbot-three.vercel.app](https://listbot-three.vercel.app) | [github.com/BV-Eng/listbot](https://github.com/BV-Eng/listbot) | Vercel |
 | PeopleBot | Executive recruiting via LinkedIn/PhantomBuster + Affinity warmth scoring | Not yet deployed | [github.com/BV-Eng/peoplebot](https://github.com/BV-Eng/peoplebot) | Not deployed |
 
 ---
