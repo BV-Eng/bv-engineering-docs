@@ -11,7 +11,7 @@ Complete guide to BV's automated deal flow, portfolio tools, and information sys
 | Tool Name | What It Does | Live URL | GitHub Repo | Runs On |
 |-----------|-------------|----------|-------------|---------|
 | AcceleratorBot | Scrapes 30+ accelerator batch pages, scores companies against BV thesis, pushes to Affinity | No web UI | [github.com/BV-Eng/acceleratorbot](https://github.com/BV-Eng/acceleratorbot) | GitHub Actions (weekly) |
-| DealBot | Scores PitchBook company exports + founders against BV thesis, pushes to Affinity | No web UI | [github.com/BV-Eng/dealbot](https://github.com/BV-Eng/dealbot) | GitHub Actions (on CSV upload) |
+| DealBot | Web app: upload PitchBook exports, score + curate, auto-scrape founders, push to Affinity | [dealbot-web.vercel.app](https://dealbot-web.vercel.app) | [BV-Eng/dealbot](https://github.com/BV-Eng/dealbot) + [BV-Eng/dealbot-web](https://github.com/BV-Eng/dealbot-web) | Vercel + GitHub Actions |
 | StealthBot | Scores LinkedIn outreach founders, assigns thesis fit + owner in Affinity | No web UI | [github.com/BV-Eng/stealthbot](https://github.com/BV-Eng/stealthbot) | GitHub Actions (4x/week) |
 | BV Pipeline | 4-stage AI deal evaluation dashboard, syncs with all Affinity lists | [bv-pipeline.vercel.app](https://bv-pipeline.vercel.app) | [github.com/BV-Eng/bv-pipeline](https://github.com/BV-Eng/bv-pipeline) | Vercel |
 | Scoring Rubrics | Shared YAML scoring criteria consumed by all bots | N/A | [github.com/BV-Eng/bv-rubrics](https://github.com/BV-Eng/bv-rubrics) | N/A (consumed via GitHub raw URL) |

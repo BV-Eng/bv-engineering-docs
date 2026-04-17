@@ -1,62 +1,65 @@
 # DealBot
 
-Scores PitchBook deal exports and LinkedIn-scraped founders, then pushes qualified companies to Affinity with auto-assigned owners.
+Web app for scoring PitchBook exports. Upload companies + people, score with Claude, curate via preview, auto-scrape founders via PhantomBuster, push to Affinity.
+
+- **Web App:** [dealbot-web.vercel.app](https://dealbot-web.vercel.app)
+- **Backend Repo:** [BV-Eng/dealbot](https://github.com/BV-Eng/dealbot) (Python + GitHub Actions)
+- **Web Repo:** [BV-Eng/dealbot-web](https://github.com/BV-Eng/dealbot-web) (Next.js on Vercel)
 
 ## How It Works
 
-1. A PitchBook CSV or XLSX export is placed in the `input/` folder (manually or via push).
-2. Claude Haiku 4.5 scores each company across three themes: Climate (1-10), Health (1-10), and Workforce (1-10).
-3. Companies scoring 5 or higher on any theme pass the filter.
-4. PhantomBuster LinkedIn scrapes (via a GitHub Gist intermediary) provide founder profile data.
-5. Founders are scored separately based on their LinkedIn profiles.
-6. Passing companies and scored founders are pushed to the Affinity list.
-7. Owners are auto-assigned based on highest theme score: Rick for Climate, Wes for Health, Lyndsey for Workforce.
+1. Upload two PitchBook exports (companies + people) at dealbot-web.vercel.app.
+2. Web app commits files to a per-run branch and triggers a GitHub Actions workflow.
+3. Claude Haiku 4.5 scores each company on Climate (1-10), Health (1-10), Workforce (1-10).
+4. Web app shows a preview with two tabs: **Recommended** (above threshold) and **Excluded** (below). User curates via checkboxes.
+5. User clicks "Push to Affinity" — triggers stage 2 workflow:
+   - Pushes selected companies to Affinity list 169980
+   - Matches founders from the people file by company name
+   - Updates a GitHub Gist with founder LinkedIn URLs
+   - Launches PhantomBuster "[Dealbot] Profile Scrape" phantom (ID: 1093960771064458)
+   - Polls PB with two-phase approach (waits for our container, then polls for done)
+   - Scores founders using canonical `bv-rubrics/founder-scoring.yaml` holistic rubric (1-10 + reasoning)
+   - Pushes Founder Score Total + Reasoning + LinkedIn URL to Affinity
+6. Owner auto-assignment: Rick (Climate), Wes (Health), Lyndsey (Workforce) based on highest theme score.
 
 ## Tech Stack
 
-| Component  | Detail                     |
-|------------|----------------------------|
-| Language   | Python 3.11                |
-| LLM        | Claude Haiku 4.5 (Anthropic) |
-| Database   | None (file-based)          |
-| Deployment | GitHub Actions             |
+| Component  | Detail                               |
+|------------|--------------------------------------|
+| Backend    | Python 3.11 (GitHub Actions)         |
+| Web App    | Next.js 14, TypeScript (Vercel)      |
+| LLM        | Claude Haiku 4.5 (Anthropic)         |
+| Rubrics    | Fetched from BV-Eng/bv-rubrics       |
+| LinkedIn   | PhantomBuster Profile Scraper        |
+| CI         | 9 smoke tests on every push to main  |
 
 ## Affinity Integration
 
 - **List:** 169980
-- **Reads:** Existing organizations to avoid duplicates.
-- **Writes:** New organizations with name, description, theme scores, founder scores, and assigned owner (Rick/Wes/Lyndsey).
+- **Company fields:** Description, scores (Climate/Health/Workforce), BV Fit Score, keywords, investors, owners
+- **Founder fields:** Founder Score Total, Founder Score Reasoning, Founder LinkedIn
+- Existing Affinity data is not overwritten (skip-if-exists for founder fields)
 
-## Data Sources
+## Env Vars
 
-- PitchBook CSV/XLSX exports (placed in `input/` folder)
-- PhantomBuster LinkedIn scrapes (fetched via GitHub Gist intermediary)
-- Scoring rubrics from `bv-rubrics` repo (company-scoring.yaml, founder-scoring.yaml)
+| Variable              | Location         | Purpose                          |
+|-----------------------|------------------|----------------------------------|
+| ANTHROPIC_API_KEY     | GitHub Secrets   | Claude scoring                   |
+| AFFINITY_API_KEY      | GitHub Secrets   | Push to Affinity                 |
+| PHANTOMBUSTER_API_KEY | GitHub Secrets   | LinkedIn founder scraping        |
+| GIST_PAT              | GitHub Secrets   | Update GitHub Gist for PB input  |
+| DEALBOT_GIST_ID       | GitHub Variables | Gist ID for PB input CSV         |
+| GITHUB_PAT            | Vercel env       | Web app → GitHub API             |
 
-## How to Access / Use
+## Error Recovery
 
-Runs automatically via GitHub Actions when a CSV is pushed to the `input/` folder.
+- **Retry button** in web UI: merges latest main into run branch + re-triggers workflow.
+- **URL resume:** `?runId=...` survives page refresh — reloads state from the run branch.
+- **Branch cleanup:** auto-deletes per-run branch when starting a new run.
 
-## How to Trigger Manually
+## Known Behaviors
 
-1. Go to the repository on GitHub.
-2. Click the **Actions** tab.
-3. Select the deal scoring workflow from the left sidebar.
-4. Click **Run workflow** (workflow_dispatch).
-5. Select the branch and click the green **Run workflow** button.
-6. Alternatively, push a new CSV/XLSX file to the `input/` folder to trigger automatically.
-
-## Key Configuration
-
-| Variable              | Location       | Purpose                           |
-|-----------------------|----------------|-----------------------------------|
-| ANTHROPIC_API_KEY     | GitHub Secrets | Claude Haiku 4.5 scoring          |
-| AFFINITY_API_KEY      | GitHub Secrets | Push companies to Affinity        |
-| PHANTOMBUSTER_API_KEY | GitHub Secrets | LinkedIn founder scraping         |
-
-## Known Limitations
-
-- Depends on PitchBook exports being manually generated and placed in the correct folder.
-- PhantomBuster LinkedIn scraping is rate-limited and may fail for private profiles.
-- GitHub Gist intermediary for PhantomBuster adds a fragile dependency.
-- No database means no historical tracking of previously scored companies beyond Affinity dedup.
+- PB two-phase polling waits for container acknowledgment before accepting "finished" (prevents stale-status race).
+- Companies already in Affinity list are skipped (status: existing).
+- Founder fields with existing values are not overwritten.
+- PB Profile Scraper columns are `linkedin`-prefixed (e.g. `linkedinHeadline`, `linkedinJobTitle`). The pipeline normalizes these before scoring.
