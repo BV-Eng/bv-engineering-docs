@@ -63,10 +63,12 @@ Investor database containing 2000+ investors. Data was imported from Affinity CS
 
 #### PeopleBot
 
-Executive recruiting pipeline for portfolio companies. Generates LinkedIn Sales Navigator search URLs based on role requirements, triggers PhantomBuster scraping of candidate profiles, and enriches results with Affinity relationship recency data ("warmth" scoring) to surface candidates with existing BV network connections.
+Executive recruiting pipeline for portfolio companies and BV internal hiring. Users paste a LinkedIn search URL and job description, select which investor's LinkedIn account to use (Rick, Wes, or Lyndsey), and PeopleBot runs the full pipeline: LinkedIn scraping via PhantomBuster, Affinity warmth enrichment, and Claude AI scoring against the job description. Scoring is adaptive — Claude extracts role-specific evaluation criteria from the JD, then scores each candidate 1-10 on every criterion with written reasoning. Results are displayed as a ranked list with shortlisting and CSV export.
 
-- **Status**: Not yet deployed to Vercel
-- **Data Sources**: LinkedIn (via PhantomBuster), Affinity
+- **Live**: [peoplebot.vercel.app](https://peoplebot.vercel.app)
+- **LLM**: Claude Haiku 4.5 (adaptive criteria extraction + candidate scoring)
+- **Database**: Supabase (pb_searches + pb_candidates tables)
+- **Data Sources**: LinkedIn (via PhantomBuster), Affinity, Claude AI
 
 ---
 
@@ -88,8 +90,8 @@ Personalized RSS and news aggregation dashboard. Each team member (Rick, Wes, Ly
 |---------|------|
 | **Affinity CRM** | Central system of record. All deal bots write to it, BV Pipeline reads from it and writes back. |
 | **GitHub Actions** | All bots run as scheduled or triggered GitHub Actions workflows. |
-| **Vercel** | Hosts BV Pipeline, NewsBot, and Raisebot. Auto-deploys from main branch. |
-| **Supabase** | PostgreSQL for BV Pipeline (companies + evals tables) and Raisebot (investors + people tables). |
+| **Vercel** | Hosts BV Pipeline, NewsBot, Raisebot, PeopleBot, ListBot, and DealBot Web. Auto-deploys from main branch. |
+| **Supabase** | PostgreSQL for BV Pipeline (companies + evals tables), Raisebot (investors + people tables), and PeopleBot (pb_searches + pb_candidates tables). |
 | **Upstash Redis** | NewsBot feed and newsletter storage. |
 | **PhantomBuster** | LinkedIn scraping for DealBot (founder profiles), StealthBot (outreach contacts), and PeopleBot (candidate search). |
 | **bv-rubrics** | Single source of truth for scoring criteria, consumed by all bots at runtime via GitHub raw URLs. |
@@ -103,6 +105,7 @@ Personalized RSS and news aggregation dashboard. Each team member (Rick, Wes, Ly
 | StealthBot | Claude Sonnet 4.6 |
 | BV Pipeline | Claude Sonnet 4.6 |
 | Raisebot | Claude Haiku 4.5 |
+| PeopleBot | Claude Haiku 4.5 |
 
 ---
 
